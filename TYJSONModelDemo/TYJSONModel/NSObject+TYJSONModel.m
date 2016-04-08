@@ -87,18 +87,34 @@ static NSNumberFormatter *s_numberFormatter;
         propertyMapper = [[self class] modelPropertyMapper];
     }
     
+    // 忽略 某些属性
+    NSArray *ignoreProperties = nil;
+    if ([[self class] respondsToSelector:@selector(ignoreModelProperties)]) {
+        ignoreProperties = [[self class] ignoreModelProperties];
+    }
+    
     // 遍历当前类所有属性
     [classInfo.propertyInfo enumerateKeysAndObjectsUsingBlock:^(NSString *key, TYPropertyInfo *propertyInfo, BOOL * stop) {
         
-        NSString *maperKey = nil;   //映射key
-        if (propertyMapper) {
-            maperKey = [propertyMapper objectForKey:key];
+        BOOL isIgnoreProperty = NO;
+        id value = nil;
+        
+        if (ignoreProperties) {
+            // 是否忽略这个属性
+            isIgnoreProperty = [ignoreProperties containsObject:key];
         }
         
-        // 根据属性名key 获取 字典里的value
-        id value = [dic objectForKey:maperKey ? maperKey : key];
+        if (!isIgnoreProperty) {
+            NSString *maperKey = nil;   //映射key
+            if (propertyMapper) {
+                maperKey = [propertyMapper objectForKey:key];
+            }
+            
+            // 根据属性名key 获取 字典里的value
+            value = [dic objectForKey:maperKey ? maperKey : key];
+        }
 
-        if (value) {
+        if (!isIgnoreProperty && value) {
             // 如果value有值
             if ([value isKindOfClass:[NSArray class]]) {
                 Class class = nil;
@@ -169,6 +185,12 @@ static NSNumberFormatter *s_numberFormatter;
         propertyMapper = [[self class] modelPropertyMapper];
     }
     
+    // 忽略 某些属性
+    NSArray *ignoreProperties = nil;
+    if ([[self class] respondsToSelector:@selector(ignoreModelProperties)]) {
+        ignoreProperties = [[self class] ignoreModelProperties];
+    }
+    
     // 获取 当前类信息
     TYClassInfo *classInfo = [[TYClassInfo alloc]initWithClass:object_getClass(self)];
     // 字典
@@ -176,34 +198,48 @@ static NSNumberFormatter *s_numberFormatter;
     
     [classInfo.propertyInfo enumerateKeysAndObjectsUsingBlock:^(NSString *key, TYPropertyInfo *propertyInfo, BOOL * stop) {
         
+        BOOL isIgnoreProperty = NO;
         id value = nil;
-        if (propertyInfo.typeClass) {
-            // 对象类型 调用生成的 getter 方法 获取值
-            value = [self propertyValueWithModel:self getter:propertyInfo.getter];
-        }else {
-            // 基本类型 使用kvc 获取值
-            value = [self valueForKey:key];
+        
+        if (ignoreProperties) {
+            // 是否忽略这个属性
+            isIgnoreProperty = [ignoreProperties containsObject:key];
         }
         
-        if ([value isKindOfClass:[NSArray class]]) {
-            // 如果值是数组（可能包含模型） 调用model数组转dic数组方法
-            value = [(NSArray *)value ty_ModelArrayToDicArray];
-        }else if ([value isKindOfClass:[NSDictionary class]]) {
-            // 如果值是字典（可能包含模型） 调用字典 model转dic方法
-            value = [(NSDictionary *)value ty_ModelDictionaryToDictionary];
-        }else if (propertyInfo.typeClass && propertyInfo.isCustomFondation) {
-            value = [value ty_ModelToDictonary];
-        }
-        
-        if (value) {
-            NSString *maperKey = nil;
-            if (propertyMapper) {
-                //映射key
-                maperKey = [propertyMapper objectForKey:key];
+        if (!isIgnoreProperty) {
+            if (propertyInfo.typeClass) {
+                // 对象类型 调用生成的 getter 方法 获取值
+                value = [self propertyValueWithModel:self getter:propertyInfo.getter];
+            }else {
+                // 基本类型 使用kvc 获取值
+                value = [self valueForKey:key];
             }
-            // 添加到字典
-            dic[maperKey ? maperKey : key] = value;
         }
+        
+        if (!isIgnoreProperty && value) {
+            // 如果有值
+            if ([value isKindOfClass:[NSArray class]]) {
+                // 如果值是数组（可能包含模型） 调用model数组转dic数组方法
+                value = [(NSArray *)value ty_ModelArrayToDicArray];
+            }else if ([value isKindOfClass:[NSDictionary class]]) {
+                // 如果值是字典（可能包含模型） 调用字典 model转dic方法
+                value = [(NSDictionary *)value ty_ModelDictionaryToDictionary];
+            }else if (propertyInfo.typeClass && propertyInfo.isCustomFondation) {
+                value = [value ty_ModelToDictonary];
+            }
+            
+            if (value) {
+                NSString *maperKey = nil;
+                if (propertyMapper) {
+                    //映射key
+                    maperKey = [propertyMapper objectForKey:key];
+                }
+                // 添加到字典
+                dic[maperKey ? maperKey : key] = value;
+            }
+
+        }
+        
     }];
     
     return [dic copy];

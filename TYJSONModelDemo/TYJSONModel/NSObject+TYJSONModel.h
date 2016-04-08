@@ -18,6 +18,9 @@
 // 属性名 - key 映射
 + (NSDictionary *)modelPropertyMapper;
 
+// 忽略某些属性
++ (NSArray *)ignoreModelProperties;
+
 @end
 
 @interface NSObject (TYJSONModel)
