@@ -117,15 +117,11 @@
                     if (class) {
                         // 包含 就调用数组的 转模型方法
                         value = [(NSArray *)value ty_ModelArrayWithClass:class];
-                    }else if (propertyInfo.isCustomFondation) {
-                        
                     }
                 }else {
                     // property 不是数组类型 返回数据有误
                     value = nil;
                 }
-                
-                
             }else if([value isKindOfClass:[NSDictionary class]]){
                 // property 是否是自定义模型
                 if (propertyInfo.isCustomFondation) {
