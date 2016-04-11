@@ -7,14 +7,13 @@
 //
 
 #import "TYPropertyInfo.h"
-
-static NSArray *s_foundations;
+#import <objc/runtime.h>
 
 @implementation TYPropertyInfo
 
 - (instancetype)initWithProperty:(objc_property_t)property
 {
-    if (property == NULL) {
+    if (!property) {
         return nil;
     }
     
@@ -90,17 +89,19 @@ static NSArray *s_foundations;
     if (class == [NSString class] || class == [NSObject class])
         return YES;
     
-    if (!s_foundations) {
-       s_foundations = @[[NSURL class],
-                         [NSDate class],
-                         [NSValue class],
-                         [NSData class],
-                         [NSError class],
-                         [NSArray class],
-                         [NSDictionary class],
-                         [NSString class],
-                         [NSAttributedString class]];
-    }
+    static NSArray *s_foundations;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        s_foundations = @[[NSURL class],
+                          [NSDate class],
+                          [NSValue class],
+                          [NSData class],
+                          [NSError class],
+                          [NSArray class],
+                          [NSDictionary class],
+                          [NSString class],
+                          [NSAttributedString class]];
+    });
     
     BOOL result = NO;
     for (Class foundationClass in s_foundations) {

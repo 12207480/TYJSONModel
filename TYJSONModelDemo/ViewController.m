@@ -172,8 +172,7 @@ void testDemo5()
     City *city1 = [City ty_ModelWithJSON:jsonString];
     NSLog(@"city: mayor: %@, name: %@, deputies: %@ total:%ld level:%@ area:%f",city1.mayor,city1.name,city1.deputies,city1.total,city1.level,city1.area);
     
-    NSDictionary *cityDic = [city1 ty_ModelToDictonary];
-    NSLog(@"city : %@",cityDic);
+    NSLog(@"city : %@",[city1 ty_ModelToJSONString]);
 }
 
 - (void)didReceiveMemoryWarning {

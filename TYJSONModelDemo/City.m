@@ -21,6 +21,11 @@
     return @{@"total":@"total_num"};
 }
 
+//+ (NSArray *)ignoreModelProperties
+//{
+//    return @[@"level"];
+//}
+
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     return [self ty_InitWithCoder:aDecoder];

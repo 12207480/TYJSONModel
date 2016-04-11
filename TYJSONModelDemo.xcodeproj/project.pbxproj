@@ -40,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B31446D1CB7A14F00665F99 /* TYJSONModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TYJSONModel.h; sourceTree = "<group>"; };
 		2B4BA37B1CB4A22000C9BB4C /* TYJSONModelDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TYJSONModelDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4BA37F1CB4A22000C9BB4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2B4BA3811CB4A22000C9BB4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -163,6 +164,7 @@
 		2B4BA3B11CB4A2CA00C9BB4C /* TYJSONModel */ = {
 			isa = PBXGroup;
 			children = (
+				2B31446D1CB7A14F00665F99 /* TYJSONModel.h */,
 				2B4BA3B21CB4A33800C9BB4C /* TYClassInfo.h */,
 				2B4BA3B31CB4A33800C9BB4C /* TYClassInfo.m */,
 				2B4BA3B51CB4A35A00C9BB4C /* TYPropertyInfo.h */,

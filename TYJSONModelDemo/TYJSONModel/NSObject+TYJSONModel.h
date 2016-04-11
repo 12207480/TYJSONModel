@@ -23,7 +23,7 @@
 
 @end
 
-@interface NSObject (TYJSONModel)
+@interface NSObject (TYJSONModel) <TYJSONModel>
 
 // json to model
 + (instancetype)ty_ModelWithJSON:(id)json; // json: NSString,NSDictionary,NSData
@@ -32,10 +32,15 @@
 - (void)ty_SetModelWithDictonary:(NSDictionary *)dic;
 
 // model to json
-- (id)ty_ModelToJSONObject;
+- (id)ty_ModelToJSONObject; // array or dic
 - (NSData *)ty_ModelToJSONData;
 - (NSString *)ty_ModelToJSONString;
 - (NSDictionary *)ty_ModelToDictonary;
+
+// dic array to model array
++ (NSArray *)ty_modelArrayWithDictionaryArray:(NSArray *)dicArray;
+// model array to dic array
++ (NSArray *)ty_dictionaryArrayWithModelArray:(NSArray *)dicArray;
 
 // NSCoding
 - (void)ty_EncodeWithCoder:(NSCoder *)aCoder;

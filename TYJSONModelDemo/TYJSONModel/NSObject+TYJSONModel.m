@@ -13,16 +13,6 @@
 
 @implementation NSObject (TYJSONModel)
 
-static NSNumberFormatter *s_numberFormatter;
-
-+ (void)load
-{
-    if (!s_numberFormatter) {
-        // NSString 转 NSNumber Formatter
-        s_numberFormatter = [[NSNumberFormatter alloc]init];
-    }
-}
-
 #pragma mark - json to model
 
 + (instancetype)ty_ModelWithJSON:(id)json
@@ -68,7 +58,7 @@ static NSNumberFormatter *s_numberFormatter;
 // dictonary to model
 - (void)ty_SetModelWithDictonary:(NSDictionary *)dic
 {
-    if (!dic) {
+    if (!dic || ![dic isKindOfClass:[NSDictionary class]] || dic.count == 0) {
         return;
     }
     
@@ -117,32 +107,46 @@ static NSNumberFormatter *s_numberFormatter;
         if (!isIgnoreProperty && value) {
             // 如果value有值
             if ([value isKindOfClass:[NSArray class]]) {
-                Class class = nil;
+                // 校验 property 是否 数组类型
+                if ([propertyInfo.typeClass isSubclassOfClass:[NSArray class]]) {
+                    Class class = nil;
+                    if (modelClassDic) {
+                        // 数组里是否包含模型
+                        class = [modelClassDic objectForKey:key];
+                    }
+                    if (class) {
+                        // 包含 就调用数组的 转模型方法
+                        value = [(NSArray *)value ty_ModelArrayWithClass:class];
+                    }else if (propertyInfo.isCustomFondation) {
+                        
+                    }
+                }else {
+                    // property 不是数组类型 返回数据有误
+                    value = nil;
+                }
                 
-                if (modelClassDic) {
-                    // 数组里是否包含模型
-                    class = [modelClassDic objectForKey:key];
-                }
-                if (class) {
-                    // 包含 就调用数组的 转模型方法
-                    value = [(NSArray *)value ty_ModelArrayWithClass:class];
-                }
+                
             }else if([value isKindOfClass:[NSDictionary class]]){
-                Class class = nil;
-                
-                if (modelClassDic) {
-                    // 字典 里 是否包含模型
-                    class = [modelClassDic objectForKey:key];
-                }
-                if (class) {
-                    // 包含 就调用字典的 转模型方法
-                    value = [(NSDictionary *)value ty_ModelDictionaryWithClass:class];
-                }else if (propertyInfo.isCustomFondation) {
-                    // 字典就是对应模型
+                // property 是否是自定义模型
+                if (propertyInfo.isCustomFondation) {
+                    // 字典 对应模型
                     value = [propertyInfo.typeClass ty_ModelWithDictonary:value];
+                }else if ([propertyInfo.typeClass isSubclassOfClass:[NSDictionary class]]) {
+                    // property 是 字典类型
+                    if (modelClassDic) {
+                        // 字典 里 是否包含模型
+                        Class class = [modelClassDic objectForKey:key];
+                        if (class) {
+                            // 包含 就调用字典的 转模型方法
+                            value = [(NSDictionary *)value ty_ModelDictionaryWithClass:class];
+                        }
+                    }
+                }else {
+                    // property 不是 字典类型 返回数据有误
+                    value = nil;
                 }
             }
-            
+        
             if ([value isEqual:[NSNull null]]) {
                 // 去除 null
                 value = nil;
@@ -162,6 +166,12 @@ static NSNumberFormatter *s_numberFormatter;
             }else if(value) {
                 // 基本类型
                 if ([value isKindOfClass:[NSString class]]) {
+                    static NSNumberFormatter *s_numberFormatter;
+                    static dispatch_once_t onceToken;
+                    dispatch_once(&onceToken, ^{
+                        // NSString 转 NSNumber Formatter
+                        s_numberFormatter = [[NSNumberFormatter alloc]init];
+                    });
                     // string 转 number
                     value = [s_numberFormatter numberFromString:value];
                 }
@@ -245,6 +255,12 @@ static NSNumberFormatter *s_numberFormatter;
     return [dic copy];
 }
 
+// dic array to model array
++ (NSArray *)ty_modelArrayWithDictionaryArray:(NSArray *)dicArray
+{
+    return [dicArray ty_ModelArrayWithClass:[self class]];
+}
+
 #pragma mark - model to json
 // model to json
 - (id)ty_ModelToJSONObject
@@ -269,6 +285,12 @@ static NSNumberFormatter *s_numberFormatter;
     NSData *jsonData = [self ty_ModelToJSONData];
     if (jsonData.length == 0) return nil;
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+// model array to dic array
++ (NSArray *)ty_dictionaryArrayWithModelArray:(NSArray *)dicArray
+{
+    return [dicArray ty_ModelArrayToDicArray];
 }
 
 #pragma mark - encode decode

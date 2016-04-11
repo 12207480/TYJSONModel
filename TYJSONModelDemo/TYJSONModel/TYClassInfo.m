@@ -12,16 +12,6 @@ static NSCache *s_classInfoCache;
 
 @implementation TYClassInfo
 
-+ (void)load
-{
-    if (!s_classInfoCache) {
-        // 设置 class 缓存
-        s_classInfoCache = [[NSCache alloc]init];
-        s_classInfoCache.totalCostLimit = 0.5*1024*1024;
-        s_classInfoCache.countLimit = 50;
-    }
-}
-
 - (instancetype)initWithClass:(Class )class
 {
     if (!class) {
@@ -29,7 +19,7 @@ static NSCache *s_classInfoCache;
     }
     
     // 取缓存
-    id cacheInfo = [s_classInfoCache objectForKey:class];
+    id cacheInfo = [self objectOnCacheForClass:class];
     if (cacheInfo) {
         return cacheInfo;
     }
@@ -59,9 +49,27 @@ static NSCache *s_classInfoCache;
     }
     
     // 添加到缓存
-    [s_classInfoCache setObject:self forKey:class];
+    [self setObjectToCacheForClass:class];
     
     return  self;
+}
+
+- (id)objectOnCacheForClass:(Class)class
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // 设置 class 缓存
+        s_classInfoCache = [[NSCache alloc]init];
+        s_classInfoCache.totalCostLimit = 0.5*1024*1024;
+        s_classInfoCache.countLimit = 50;
+    });
+    id cacheInfo = [s_classInfoCache objectForKey:class];
+    return cacheInfo;
+}
+
+- (void)setObjectToCacheForClass:(Class)class
+{
+    [s_classInfoCache setObject:self forKey:class];
 }
 
 @end

@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong, readonly) NSString *propertyName;  // 属性名
 
-@property (nonatomic, assign, readonly) Class typeClass;      // 属性 class类型
+@property (nonatomic, assign, readonly) Class typeClass;      // 属性class类型 如果属性是基本类型为nil
 
 @property (nonatomic, assign, readonly) BOOL isCustomFondation; // 是否自定义对象类型
 
