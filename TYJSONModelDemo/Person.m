@@ -7,7 +7,7 @@
 //
 
 #import "Person.h"
-#import "NSObject+TYJSONModel.h"
+#import "TYJSONModel.h"
 
 @implementation Person
 

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "NSObject+TYJSONModel.h"
+#import "TYJSONModel.h"
 #import "Person.h"
 #import "City.h"
 
