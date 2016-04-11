@@ -1,6 +1,6 @@
 # TYJSONModel
 A fast conversion between JSON and Model
-<br>一个快速的json转model类库，使用简单，同时代码简单，注释丰富易于学习，理解。
+<br>一个快速的json转model类库，使用简单，同时代码简单，注释丰富非常适合学习。
 
 ###用法
 ```objc
@@ -37,6 +37,8 @@ A fast conversion between JSON and Model
 + (NSArray *)ignoreModelProperties;
 ```
 
+###测试
+Benchmark 下载链接:http://pan.baidu.com/s/1eSz2uFw 密码:na5w
 ```
 数据测试
 ----------------------
