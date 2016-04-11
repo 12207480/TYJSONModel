@@ -1,6 +1,40 @@
 # TYJSONModel
 A fast conversion between JSON and Model
-一个快速的json转model类库，同时代码简单，注释丰富易于学习，理解。
+<br>一个快速的json转model类库，使用简单，同时代码简单，注释丰富易于学习，理解。
+
+###用法
+```objc
+// json to model
++ (instancetype)ty_ModelWithJSON:(id)json; // json: NSString,NSDictionary,NSData
++ (instancetype)ty_ModelWithDictonary:(NSDictionary *)dic;
+
+// model to json
+- (id)ty_ModelToJSONObject; // array or dic
+- (NSData *)ty_ModelToJSONData;
+- (NSString *)ty_ModelToJSONString;
+- (NSDictionary *)ty_ModelToDictonary;
+
+// dic array to model array
++ (NSArray *)ty_modelArrayWithDictionaryArray:(NSArray *)dicArray;
+// model array to dic array
++ (NSArray *)ty_dictionaryArrayWithModelArray:(NSArray *)dicArray;
+
+// NSCoding
+- (void)ty_EncodeWithCoder:(NSCoder *)aCoder;
+- (instancetype)ty_InitWithCoder:(NSCoder *)aDecoder;
+```
+
+```objc
+// protocol TYJSONModel
+// 数组[value,value] 或 字典{key: value,key: value} value模型映射类型
++ (NSDictionary *)modelClassInArrayOrDictonary;
+
+// 属性名 - key 映射
++ (NSDictionary *)modelPropertyMapper;
+
+// 忽略某些属性
++ (NSArray *)ignoreModelProperties;
+```
 
 ```
 数据测试
