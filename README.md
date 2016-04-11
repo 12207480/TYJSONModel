@@ -4,6 +4,7 @@ A fast conversion between JSON and Model
 
 ###用法
 ```objc
+// NSObject Catergory
 // json to model
 + (instancetype)ty_ModelWithJSON:(id)json; // json: NSString,NSDictionary,NSData
 + (instancetype)ty_ModelWithDictonary:(NSDictionary *)dic;
@@ -25,7 +26,7 @@ A fast conversion between JSON and Model
 ```
 
 ```objc
-// protocol TYJSONModel
+// Protocol TYJSONModel
 // 数组[value,value] 或 字典{key: value,key: value} value模型映射类型
 + (NSDictionary *)modelClassInArrayOrDictonary;
 
