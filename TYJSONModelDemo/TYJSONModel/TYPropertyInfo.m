@@ -26,6 +26,7 @@
              _propertyName = [NSString stringWithUTF8String:cPropertyName];
         }
         
+        BOOL readOnlyProperty = NO;
         unsigned int attrCount;
         // 获取属性的属性list
         objc_property_attribute_t *attrs = property_copyAttributeList(property, &attrCount);
@@ -43,7 +44,9 @@
                         }
                     }
                     break;
-                
+                case 'R':
+                    readOnlyProperty = YES;
+                    break;
                 case 'G':   // 自定义getter方法
                     if (attrs[idx].value) {
                         _getter = NSSelectorFromString([NSString stringWithUTF8String:attrs[idx].value]);
@@ -74,7 +77,7 @@
             if (!_getter) {
                 _getter = NSSelectorFromString(_propertyName);
             }
-            if (!_setter) {
+            if (!_setter && !readOnlyProperty) {
                 _setter = NSSelectorFromString([NSString stringWithFormat:@"set%@%@:", [_propertyName substringToIndex:1].uppercaseString, [_propertyName substringFromIndex:1]]);
             }
         }

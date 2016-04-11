@@ -40,7 +40,7 @@ void testDemo1()
     person.name = @"yester";
     person.sex = @"女";
     person.tag = @(6);
-    person.height = @(168.8);
+    //person.height = @(168.8);
     person.weight = 46.6;
     
     NSString *path = NSTemporaryDirectory();
@@ -61,7 +61,7 @@ void testDemo2()
     person.name = @"yester";
     person.sex = @"女";
     person.tag = @(6);
-    person.height = @(168.8);
+    //person.height = @(168.8);
     person.weight = 46.6;
     
     NSDictionary *dic = [person ty_ModelToDictonary];
@@ -81,7 +81,7 @@ void testDemo3()
     mayor.name = @"maey";
     mayor.sex = @"女";
     mayor.tag = @(6);
-    mayor.height = @(168.8);
+    //mayor.height = @(168.8);
     mayor.weight = 46.6;
     
     Person *deputie = [[Person alloc]init];
@@ -89,7 +89,7 @@ void testDemo3()
     deputie.name = @"jack";
     deputie.sex = @"男";
     deputie.tag = @(8);
-    deputie.height = @(178.8);
+    //deputie.height = @(178.8);
     deputie.weight = 48.6;
     
     Person *deputie1 = [[Person alloc]init];
@@ -97,7 +97,7 @@ void testDemo3()
     deputie1.name = @"mark";
     deputie1.sex = @"男";
     deputie1.tag = @(7);
-    deputie1.height = @(178.8);
+    //deputie1.height = @(178.8);
     deputie1.weight = 46.8;
     
     city.mayor = mayor;
@@ -126,7 +126,7 @@ void testDemo4()
     mayor.name = @"maey";
     mayor.sex = @"女";
     mayor.tag = @(6);
-    mayor.height = @(168.8);
+    //mayor.height = @(168.8);
     mayor.weight = 46.6;
     
     Person *deputie = [[Person alloc]init];
@@ -134,7 +134,7 @@ void testDemo4()
     deputie.name = @"jack";
     deputie.sex = @"男";
     deputie.tag = @(8);
-    deputie.height = @(178.8);
+    //deputie.height = @(178.8);
     deputie.weight = 48.6;
     
     Person *deputie1 = [[Person alloc]init];
@@ -142,7 +142,7 @@ void testDemo4()
     deputie1.name = @"mark";
     deputie1.sex = @"男";
     deputie1.tag = @(7);
-    deputie1.height = @(178.8);
+    //deputie1.height = @(178.8);
     deputie1.weight = 46.8;
     
     city.mayor = mayor;

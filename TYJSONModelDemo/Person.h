@@ -18,7 +18,7 @@
 
 @property (nonatomic, strong) NSNumber *tag;
 
-@property (nonatomic, strong) NSNumber *height;
+@property (nonatomic, strong,readonly) NSNumber *height;
 
 @property (nonatomic, assign) double weight;
 

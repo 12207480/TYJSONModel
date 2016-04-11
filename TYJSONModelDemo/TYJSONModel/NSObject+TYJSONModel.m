@@ -339,12 +339,18 @@
 // set Property
 - (void)setPropertyWithModel:(id)model value:(id)value setter:(SEL)setter
 {
+    if (!setter) {
+        return;
+    }
     ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, setter, value);
 }
 
 // get Property
 - (id)propertyValueWithModel:(id)model getter:(SEL)getter
 {
+    if (!getter) {
+        return nil;
+    }
     return ((id (*)(id, SEL))(void *) objc_msgSend)((id)model,getter);
 }
 
