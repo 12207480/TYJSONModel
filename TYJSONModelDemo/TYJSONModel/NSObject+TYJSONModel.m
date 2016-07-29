@@ -252,7 +252,7 @@
 }
 
 // dic array to model array
-+ (NSArray *)ty_modelArrayWithDictionaryArray:(NSArray *)dicArray
++ (NSArray *)ty_ModelArrayWithDictionaryArray:(NSArray *)dicArray
 {
     return [dicArray ty_ModelArrayWithClass:[self class]];
 }
@@ -284,7 +284,7 @@
 }
 
 // model array to dic array
-+ (NSArray *)ty_dictionaryArrayWithModelArray:(NSArray *)dicArray
++ (NSArray *)ty_DictionaryArrayWithModelArray:(NSArray *)dicArray
 {
     return [dicArray ty_ModelArrayToDicArray];
 }
